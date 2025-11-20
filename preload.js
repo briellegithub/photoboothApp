@@ -1,7 +1,6 @@
-const { contextBridge } = require('electron')
+const { contextBridge, ipcRenderer } = require('electron')
 
-contextBridge.exposeInMainWorld('versions', {
-  node: () => process.versions.node,
-  chrome: () => process.versions.chrome,
-  electron: () => process.versions.electron
+contextBridge.exposeInMainWorld('electronAPI', {
+  savePhoto: (imgData) => ipcRenderer.send('save-photo', imgData),
+  onPhotoSaved: (callback) => ipcRenderer.on('photo-saved', (event, path) => callback(path))
 })

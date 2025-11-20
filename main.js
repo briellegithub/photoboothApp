@@ -1,5 +1,28 @@
 const { app, BrowserWindow } = require('electron/main')
 const path = require('node:path')
+const {ipcMain, dialog} = require('electron') //ipc lets code talk to main
+const fs = require('fs') //reads or writes files
+
+ipcMain.on('save-photo', async(event, imgData) =>{
+  const buffer = Buffer.from(
+    imgData.replace(/^data:image\/\w+;base64,/, ''),
+    'base64'
+  )
+
+  const {filePath} = await dialog.showSaveDialog({ //opens a "Save As..."
+    defaultPath: `photo_${Date.now()}.png`,
+    filters: [{name: 'Images', extensions: ['png']}]
+  })
+
+  if(filePath){
+    fs.writeFile(filePath, buffer, (err) => {
+      if(err) console.error('Failed to save photo: ', err)
+      else console.log('Photo saved to', filePath)
+    })
+  }
+  
+}) 
+
 
 const createWindow = () => {
   const win = new BrowserWindow({

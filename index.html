@@ -40,6 +40,13 @@
       justify-content: center;
       align-items: center;
     }
+    #countdown{
+      font-size: 20px;
+      font-weight: bold;
+      color: #333;
+      margin: 20px;
+      min-height: 80px
+    }
    </style>
  </head>
  <body>
@@ -50,6 +57,8 @@
    <br>
    <button id = "startCamera">Start Camera</button>
    <button id = "takePhoto">Take Photo</button>
+   <button id = "downloadImg">download</button>
+   <div id = "countdown"></div>
    <canvas id = "canvas" style = "display:none;"></canvas>
    <div id="photos"></div>
  </body>
