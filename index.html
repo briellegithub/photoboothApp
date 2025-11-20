@@ -4,19 +4,54 @@
    <meta charset="UTF-8" />
    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
    <meta
-     http-equiv="Content-Security-Policy"
-     content="default-src 'self'; script-src 'self'"
+    http-equiv="Content-Security-Policy"
+    content="default-src 'self'; script-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'"
    />
    <meta
-     http-equiv="X-Content-Security-Policy"
-     content="default-src 'self'; script-src 'self'"
+    http-equiv="X-Content-Security-Policy"
+    content="default-src 'self'; script-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'"
    />
-   <title>Brielle's First app</title><!--The name of the app-->
+   <title>photobooth by brielle</title>
+   <style>
+    body{
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+      background: #fff;
+    }
+    #video{
+      width: 535px;
+      height: 400px;
+      background: #000;
+      border: 3px solid #000;
+      border-radius: 10px;
+      align-items: center;
+      transform: scaleX(-1); /* flip the webcam feed horizontally */
+    }
+    button{
+      margin: 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    #video-container{
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+   </style>
  </head>
  <body>
-   <h1>Brielle's first app</h1><!--The title on the screen-->
-   <p>👋</p>
-   <p id="info"></p>
+   <h1> brielle's photobooth </h1>
+   <div id="video-container">
+      <video id = "video" autoplay></video>
+   </div>
+   <br>
+   <button id = "startCamera">Start Camera</button>
+   <button id = "takePhoto">Take Photo</button>
+   <canvas id = "canvas" style = "display:none;"></canvas>
+   <div id="photos"></div>
  </body>
  <script src ="./renderer.js"></script>
 </html>
