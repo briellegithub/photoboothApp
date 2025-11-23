@@ -4,6 +4,7 @@ const startCameraButton = document.getElementById('startCamera')
 const takePhotoButton = document.getElementById('takePhoto')
 const photosContainer = document.getElementById('photos')
 const photoCountdown = document.getElementById('countdown')
+const flash = document.getElementById('flash')
 
 let stream = null
 
@@ -42,8 +43,15 @@ takePhotoButton.addEventListener('click', async () => {
         await new Promise(resolve => setTimeout(resolve, 1000)) //waits 1 second
     }
 
-    photoCountdown.textContent = '📸'
-    await new Promise(resolve => setTimeout(resolve, 200))
+    // photoCountdown.textContent = '📸'
+    // await new Promise(resolve => setTimeout(resolve, 200))
+
+    flash.style.opacity = 1
+
+    // Hide flash after short delay
+    setTimeout(() => {
+        flash.style.opacity = 0
+    }, 400) // 100 ms flash
 
     canvas.width = video.videoWidth
     canvas.height = video.videoHeight
