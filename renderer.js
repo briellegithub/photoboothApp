@@ -1,14 +1,25 @@
 const video = document.getElementById('video')
 const canvas = document.getElementById('canvas')
-const startCameraButton = document.getElementById('startCamera')
 const takePhotoButton = document.getElementById('takePhoto')
 const photosContainer = document.getElementById('photos')
 const photoCountdown = document.getElementById('countdown')
 const flash = document.getElementById('flash')
 
+//filters
+const noFilter = document.getElementById('filterNone')
+const grayscale = document.getElementById('filterGrayscale')
+const sepia = document.getElementById('filterSepia')
+
+let currentFilter = 'none'
+
 let stream = null
 
-startCameraButton.addEventListener('click', async() => { //async - works while other things are running (must use await)
+window.addEventListener('DOMContentLoaded', () =>{
+    startCamera()
+})
+
+//start camera
+async function startCamera() { //async - works while other things are running (must use await)
     try{
         stream = await navigator.mediaDevices.getUserMedia({
             video: {width: video.width, height: video.height},
@@ -17,14 +28,51 @@ startCameraButton.addEventListener('click', async() => { //async - works while o
         video.srcObject = stream
         video.setAttribute('crossorigin', 'anonymous')
         video.play() //optional(?)
-        startCameraButton.disabled = true
-        startCameraButton.textContent = 'camera active!'
     } catch(err){
         console.error('Camera not working',err)
         alert('Could not access camera: '+err.message)
     }
+}
+
+//choose filter
+highlightSelectedFilter()
+noFilter.addEventListener('click', () =>{
+    currentFilter = 'none'
+    video.style.filter = currentFilter
+    highlightSelectedFilter()
+    console.log(currentFilter)
+})
+grayscale.addEventListener('click', () =>{
+    currentFilter = 'grayscale(100%)'
+    video.style.filter = currentFilter
+    highlightSelectedFilter()
+    console.log(currentFilter)
+})
+sepia.addEventListener('click', () =>{
+    currentFilter = 'sepia(75%)'
+    video.style.filter = currentFilter
+    highlightSelectedFilter()
+    console.log(currentFilter)
 })
 
+function highlightSelectedFilter(){
+    noFilter.style.fontWeight = 'light'
+    grayscale.style.fontWeight = 'light'
+    sepia.style.fontWeight = 'light'
+
+    if(currentFilter === 'none'){
+        noFilter.style.fontWeight = 'bold'
+        console.log("Set to none!")
+    } else if(currentFilter === 'grayscale(100%)'){
+        grayscale.style.fontWeight = 'bold'
+        console.log("Set to grayscale!")
+    } else if(currentFilter === 'sepia(75%)'){
+        sepia.style.fontWeight = 'bold'
+        console.log("Set to sepia!")
+    }
+}
+
+//take photo
 takePhotoButton.addEventListener('click', async () => {
     if(!stream){
         alert('Please start the camera first!')
@@ -79,6 +127,11 @@ takePhotoButton.addEventListener('click', async () => {
     img.style.margin = '10px'
     img.style.border = '2px solid #333'
 
+    if(currentFilter != 'none'){
+        img.style.filter = currentFilter
+        console.log(img.style.filter)
+    }
+
     wrapper.appendChild(img)
 
     //debugging
@@ -99,7 +152,7 @@ takePhotoButton.addEventListener('click', async () => {
     downloadPhoto.style.display = 'circle'
     downloadPhoto.style.margin = '5px auto'
     downloadPhoto.style.padding = '6px 12px'
-    downloadPhoto.style.fontSize = '14px'
+    downloadPhoto.style.fontSize = '20px'
     downloadPhoto.style.cursor = 'pointer'
 
     downloadPhoto.addEventListener('click', () => {
